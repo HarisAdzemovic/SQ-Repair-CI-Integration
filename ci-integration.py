@@ -4,10 +4,10 @@ import os;
 import shutil;
 
 sourceFolder = "sonarqube-repair/source/act/TraceSortList";
-#sp.call('hub clone kth-tcs/sonarqube-repair', shell = True);
-#sp.call('mvn clean package', shell = True, cwd = "sonarqube-repair");
-#sp.call('hub clone nharrand/TraceSortList', shell = True);
-#sp.call('git checkout -b IteratorNextException', shell = True, cwd = "TraceSortList");
+sp.call('hub clone kth-tcs/sonarqube-repair', shell = True);
+sp.call('mvn clean package', shell = True, cwd = "sonarqube-repair");
+sp.call('hub clone nharrand/TraceSortList', shell = True);
+sp.call('git checkout -b IteratorNextException', shell = True, cwd = "TraceSortList");
 path = "TraceSortList"
 originalFiles = [];
 for r, d, f in os.walk(path):
