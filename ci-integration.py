@@ -2,6 +2,7 @@
 import subprocess as sp;
 import os;
 import shutil;
+import filecmp;
 
 sourceFolder = "sonarqube-repair/source/act/TraceSortList";
 sp.call('hub clone kth-tcs/sonarqube-repair', shell = True);
@@ -28,3 +29,20 @@ for f in originalFiles:
     shutil.copy(f, sourceFolder);
 
 sp.call('java -cp target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar Main 2272', shell = True, cwd = "sonarqube-repair")
+
+path = "sonarqube-repair/spooned/se"
+spoonedFiles = [];
+for r, d, f in os.walk(path):
+    for file in f:
+        if '.java' in file:
+            spoonedFiles.append(os.path.join(r, file))
+
+for f in spoonedFiles:
+    print(f)
+
+for o in originalFiles:
+    for s in spoonedFiles:
+        if(o.split("/")[-1] == s.split("/")[-1]):
+            if(not filecmp.cmp(o, s)):
+                shutil.copy(s, o);
+            break;
