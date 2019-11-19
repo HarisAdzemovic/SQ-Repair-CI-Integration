@@ -46,3 +46,8 @@ for o in originalFiles:
             if(not filecmp.cmp(o, s)):
                 shutil.copy(s, o);
             break;
+
+sp.call('git commit -a -m "Next should call hasNext and throw a NoSuchElementException"', shell = True, cwd = "TraceSortList");
+
+sp.call('hub fork --remote-name=origin', shell = True, cwd = "TraceSortList");
+sp.call('git push origin IteratorNextException', shell = True, cwd = "TraceSortList");
