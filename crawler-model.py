@@ -7,9 +7,11 @@ import subprocess as sp;
 import os;
 import shutil;
 import filecmp;
+import sys;
 
+project = sys.argv[1];
+projectOwner = sys.argv[2];
 rules = ['2111', '2116', '2272', '4973'];
-project ='TraceSortList';
 SQR = 'sonarqube-repair';
 sourceFolder = SQR + '/source/act/' + project;
 # Clone SQ-Repair and package it
@@ -17,7 +19,7 @@ sp.call('hub clone kth-tcs/sonarqube-repair', shell = True);
 sp.call('mvn clean package', shell = True, cwd = SQR);
 
 # Clone the project to be analyzed and make a branch
-sp.call('hub clone nharrand/'+project, shell = True);
+sp.call(['hub', 'clone', projectOwner + '/' + project]);
 sp.call('git checkout -b IteratorNextException', shell = True, cwd = project);
 
 # Find all java files in the project to be analyzed
