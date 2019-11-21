@@ -36,7 +36,7 @@ for f in originalFiles:
     shutil.copy(f, sourceFolder);
 
 # Perform transformation on all files for rule 2272
-sp.call('java -cp target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar Main 2272', shell = True, cwd = SQR)
+sp.call(['java', '-cp', 'target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar', 'Main', '2272'], cwd = SQR)
 
 # Go over all Spooned files and compare them to originals. If a diff is found, replace it.
 path = SQR + '/spooned/se'
