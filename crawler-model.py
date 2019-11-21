@@ -13,14 +13,15 @@ project = sys.argv[1];
 projectOwner = sys.argv[2];
 rules = ['2111', '2116', '2272', '4973'];
 SQR = 'sonarqube-repair';
+branch = 'SonarqubeRepair';
 sourceFolder = SQR + '/source/act/' + project;
 # Clone SQ-Repair and package it
-sp.call('hub clone kth-tcs/sonarqube-repair', shell = True);
-sp.call('mvn clean package', shell = True, cwd = SQR);
+sp.call(['hub', 'clone', 'kth-tcs/' + SQR]);
+sp.call(['mvn', 'clean', 'package'], cwd = SQR);
 
 # Clone the project to be analyzed and make a branch
 sp.call(['hub', 'clone', projectOwner + '/' + project]);
-sp.call('git checkout -b IteratorNextException', shell = True, cwd = project);
+sp.call(['git', 'checkout', '-b', branch], cwd = project);
 
 # Find all java files in the project to be analyzed
 originalFiles = [];
@@ -59,6 +60,6 @@ for rule in rules:
                 break;
 
 # Make a commit, fork the project and push the commit
-sp.call('git commit -a -m "Next should call hasNext and throw a NoSuchElementException"', shell = True, cwd = project);
-sp.call('hub fork --remote-name=origin', shell = True, cwd = project);
-sp.call('git push origin IteratorNextException', shell = True, cwd = project);
+sp.call(['git', 'commit', '-a', '-m', 'Repairs Sonarqube violations'], cwd = project);
+sp.call(['hub', 'fork', '--remote-name=origin'], cwd = project);
+sp.call(['git', 'push', 'origin', branch], cwd = project);
