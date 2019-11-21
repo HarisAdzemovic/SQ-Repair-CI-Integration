@@ -8,6 +8,7 @@ import os;
 import shutil;
 import filecmp;
 
+rules = ['2111', '2116', '2272', '4973'];
 project ='TraceSortList';
 SQR = 'sonarqube-repair';
 sourceFolder = SQR + '/source/act/' + project;
@@ -32,26 +33,28 @@ try:
 except OSError:
     print ('Directory does not exist');
 os.makedirs(sourceFolder);
-for f in originalFiles:
-    shutil.copy(f, sourceFolder);
 
-# Perform transformation on all files for rule 2272
-sp.call(['java', '-cp', 'target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar', 'Main', '2272'], cwd = SQR)
+for rule in rules:
+    for f in originalFiles:
+        shutil.copy(f, sourceFolder);
 
-# Go over all Spooned files and compare them to originals. If a diff is found, replace it.
-path = SQR + '/spooned/se'
-spoonedFiles = [];
-for r, d, f in os.walk(path):
-    for file in f:
-        if '.java' in file:
-            spoonedFiles.append(os.path.join(r, file))
+    # Perform transformation on all files for rule 2272
+    sp.call(['java', '-cp', 'target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar', 'Main', rule], cwd = SQR)
 
-for o in originalFiles:
-    for s in spoonedFiles:
-        if(o.split('/')[-1] == s.split('/')[-1]):
-            if(not filecmp.cmp(o, s)):
-                shutil.copy(s, o);
-            break;
+    # Go over all Spooned files and compare them to originals. If a diff is found, replace it.
+    path = SQR + '/spooned/se'
+    spoonedFiles = [];
+    for r, d, f in os.walk(path):
+        for file in f:
+            if '.java' in file:
+                spoonedFiles.append(os.path.join(r, file))
+
+    for o in originalFiles:
+        for s in spoonedFiles:
+            if(o.split('/')[-1] == s.split('/')[-1]):
+                if(not filecmp.cmp(o, s)):
+                    shutil.copy(s, o);
+                break;
 
 # Make a commit, fork the project and push the commit
 sp.call('git commit -a -m "Next should call hasNext and throw a NoSuchElementException"', shell = True, cwd = project);
