@@ -41,7 +41,7 @@ for rule in rules:
     for f in originalFiles:
         shutil.copy(f, sourceFolder);
 
-    # Perform transformation on all files for rule 2272
+    # Perform transformation on all files
     sp.call(['java', '-cp', 'target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar', 'Main', rule], cwd = SQR)
 
     # Go over all Spooned files and compare them to originals. If a diff is found, replace it.
