@@ -50,6 +50,6 @@ if(os.environ['TRAVIS_BRANCH'] == 'master' and os.environ['TRAVIS_PULL_REQUEST']
 
         # Make a commit to the branhc and push it
         sp.call(['git', 'commit', '-a', '-m', 'Repairs Sonarqube violations'], cwd = project);
-        sp.call(['git', 'push', 'origin', branch, cwd = project);
+        sp.call(['git', 'push', 'origin', branch], cwd = project);
 else:
     print("Wrong branch or PR");
