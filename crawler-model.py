@@ -14,10 +14,7 @@ projectOwner = sys.argv[2];
 rules = ['2111', '2116', '2272', '4973'];
 SQR = 'sonarqube-repair';
 branch = 'SonarqubeRepair';
-sourceFolder = SQR + '/source/act/' + project;
-# Clone SQ-Repair and package it
-sp.call(['hub', 'clone', 'kth-tcs/' + SQR]);
-sp.call(['mvn', 'clean', 'package'], cwd = SQR);
+sourceFolder = 'source/act/' + project;
 
 # Clone the project to be analyzed and make a branch
 sp.call(['hub', 'clone', projectOwner + '/' + project]);
@@ -42,10 +39,10 @@ for rule in rules:
         shutil.copy(f, sourceFolder);
 
     # Perform transformation on all files
-    sp.call(['java', '-cp', 'target/sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar', 'Main', rule], cwd = SQR)
+    sp.call(['java', '-cp', 'sonarqube-repair-0.1-SNAPSHOT-jar-with-dependencies.jar', 'Main', rule])
 
     # Go over all Spooned files and compare them to originals. If a diff is found, replace it.
-    path = SQR + '/spooned/se'
+    path = 'spooned'
     spoonedFiles = [];
     for r, d, f in os.walk(path):
         for file in f:
