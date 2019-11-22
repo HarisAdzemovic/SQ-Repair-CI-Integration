@@ -60,3 +60,8 @@ for rule in rules:
 sp.call(['git', 'commit', '-a', '-m', 'Repairs Sonarqube violations'], cwd = project);
 sp.call(['hub', 'fork', '--remote-name=origin'], cwd = project);
 sp.call(['git', 'push', 'origin', branch], cwd = project);
+
+# Clean up
+sp.call(['rm', '-rf', 'source']);
+sp.call(['rm', '-rf', 'spooned']);
+sp.call(['rm', '-rf', project]);
