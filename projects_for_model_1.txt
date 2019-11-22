@@ -1,0 +1,3 @@
+sling-org-apache-sling-servlets-post apache
+sling-org-apache-sling-jobs apache
+sling-org-apache-sling-jcr-jackrabbit-usermanager apache
